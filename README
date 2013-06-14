@@ -1,0 +1,38 @@
+NAME
+    Thrall - a simple PSGI/Plack HTTP server which uses threads
+
+SYNOPSIS
+      % plackup -s Thrall --port=80 [options] your-app.psgi
+
+DESCRIPTION
+    Thrall is a standalone HTTP/1.0 server with keep-alive support. It uses
+    threads instead pre-forking, so it works correctly on Windows.
+
+NOTES
+    Thrall was started as a fork of Starlet server. It has almost the same
+    code as Starlet and it was adapted to use threads instead fork().
+
+SEE ALSO
+    Starlet, Starman
+
+BUGS
+    If you find the bug or want to implement new features, please report it
+    at https://github.com/dex4er/Thrall/issues
+
+    The code repository is available at http://github.com/dex4er/Thrall
+
+AUTHOR
+    Kazuho Oku
+
+    miyagawa
+
+    Piotr Roszatycki <dexter@cpan.org>
+
+LICENSE
+    Copyright (c) 2013 Piotr Roszatycki <dexter@cpan.org>.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as perl itself.
+
+    See http://dev.perl.org/licenses/artistic.html
+
