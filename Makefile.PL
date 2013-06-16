@@ -5,17 +5,17 @@ WriteMakefile
 (
   'PL_FILES' => {},
   'NAME' => 'Thrall',
-  'VERSION_FROM' => 'lib/Thrall.pm',
   'PREREQ_PM' => {
-                   'threads' => 0,
+                   'Plack' => '0.992',
+                   'Test::More' => '0.88',
                    'HTTP::Tiny' => 0,
                    'Test::TCP' => '0.15',
-                   'Test::More' => '0.88',
-                   'Plack' => '0.992'
+                   'threads' => 0
                  },
+  'INSTALLDIRS' => 'site',
   'EXE_FILES' => [
                    'script/thrall.pl'
                  ],
-  'INSTALLDIRS' => 'site'
+  'VERSION_FROM' => 'lib/Thrall.pm'
 )
 ;
