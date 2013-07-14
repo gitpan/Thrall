@@ -6,7 +6,7 @@ Thrall - a simple PSGI/Plack HTTP server which uses threads
 
 =head1 SYNOPSIS
 
-  % plackup -s Thrall --port=80 [options] your-app.psgi
+  $ plackup -s Thrall --port=80 [options] your-app.psgi
 
 =head1 DESCRIPTION
 
@@ -23,7 +23,7 @@ use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
 
 1;
 
@@ -57,7 +57,7 @@ one, persistent connections are disabled (default: 1)
 =item --max-reqs-per-child=#
 
 max. number of requests to be handled before a worker process exits (default:
-100)
+1000)
 
 =item --min-reqs-per-child=#
 
@@ -91,6 +91,14 @@ L<Starlet>,
 L<Starman>
 
 =head1 BUGS
+
+There is a problem with Perl implementation on Windows XP/Vista/7. Some
+requests can fail with message:
+
+  failed to set socket to nonblocking mode:An operation was attempted on
+  something that is not a socket.
+
+Perl on Windows 8 works correctly.
 
 If you find the bug or want to implement new features, please report it at
 L<https://github.com/dex4er/Thrall/issues>

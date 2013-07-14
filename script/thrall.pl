@@ -6,7 +6,7 @@ thrall - a simple PSGI/Plack HTTP server which uses threads
 
 =head1 SYNOPSIS
 
-B<thrall>
+$ thrall
 --workers 20
 --port 8080
 --max-reqs-per-child 100
@@ -29,7 +29,7 @@ use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
 
 use Plack::Runner;
 

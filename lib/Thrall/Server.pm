@@ -3,7 +3,10 @@ package Thrall::Server;
 use strict;
 use warnings;
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
+
+use Config;
+use if ! $Config{useithreads}, 'forks';
 
 use threads;
 
@@ -22,8 +25,8 @@ use Socket qw(IPPROTO_TCP TCP_NODELAY);
 use Try::Tiny;
 use Time::HiRes qw(time);
 
+use constant DEBUG => $ENV{PERL_THRALL_DEBUG};
 use constant MAX_REQUEST_SIZE => 131072;
-use constant MSWin32          => $^O eq 'MSWin32';
 
 my $null_io = do { open my $io, "<", \""; $io }; #"
 
@@ -36,14 +39,14 @@ sub new {
         timeout              => $args{timeout} || 300,
         keepalive_timeout    => $args{keepalive_timeout} || 2,
         max_keepalive_reqs   => $args{max_keepalive_reqs} || 1,
-        server_software      => $args{server_software} || $class,
+        server_software      => $args{server_software} || "Thrall/$VERSION ($^O)",
         server_ready         => $args{server_ready} || sub {},
         min_reqs_per_child   => (
             defined $args{min_reqs_per_child}
                 ? $args{min_reqs_per_child} : undef,
         ),
         max_reqs_per_child   => (
-            $args{max_reqs_per_child} || $args{max_requests} || 100,
+            $args{max_reqs_per_child} || $args{max_requests} || 1000,
         ),
         spawn_interval       => $args{spawn_interval} || 0,
         err_respawn_interval => (
@@ -52,6 +55,7 @@ sub new {
         ),
         main_thread_delay    => $args{main_thread_delay} || 0.1,
         is_multithread       => Plack::Util::FALSE,
+        is_multiprocess      => Plack::Util::FALSE,
         _using_defer_accept  => undef,
     }, $class;
 
@@ -97,17 +101,11 @@ sub accept_loop {
 
     $self->{can_exit} = 1;
     my $is_keepalive = 0;
-    local $SIG{TERM} = sub {
-        threads->exit if $self->{can_exit};
-        $self->{term_received}++;
-        threads->exit
-            if ($is_keepalive && $self->{can_exit}) || $self->{term_received} > 1;
-        # warn "server termination delayed while handling current HTTP request";
-    };
 
     local $SIG{PIPE} = sub { 'IGNORE' };
 
     while (! defined $max_reqs_per_child || $proc_req_count < $max_reqs_per_child) {
+        threads->yield;
         if (my $conn = $self->{listen_sock}->accept) {
             $self->{_is_deferred_accept} = $self->{_using_defer_accept};
             $conn->blocking(0)
@@ -129,11 +127,12 @@ sub accept_loop {
                     'psgi.url_scheme' => 'http',
                     'psgi.run_once'     => Plack::Util::FALSE,
                     'psgi.multithread'  => $self->{is_multithread},
-                    'psgi.multiprocess' => Plack::Util::FALSE,
+                    'psgi.multiprocess' => $self->{is_multiprocess},
                     'psgi.streaming'    => Plack::Util::TRUE,
                     'psgi.nonblocking'  => Plack::Util::FALSE,
                     'psgix.input.buffered' => Plack::Util::TRUE,
                     'psgix.io'          => $conn,
+                    'psgix.harakiri'    => Plack::Util::TRUE,
                 };
 
                 # no need to take care of pipelining since this module is a HTTP/1.0 server
@@ -142,8 +141,12 @@ sub accept_loop {
                     $may_keepalive = undef;
                 }
                 $is_keepalive = ($req_count != 1) ? 1 : 0;
-                $self->handle_connection($env, $conn, $app, $may_keepalive, $req_count != 1)
-                    or last;
+                my $use_keepalive = $self->handle_connection($env, $conn, $app, $may_keepalive, $req_count != 1);
+                if ($env->{'psgix.harakiri.commit'}) {
+                    $conn->close;
+                    return;
+                }
+                $use_keepalive or last;
                 # TODO add special cases for clients with broken keep-alive support, as well as disabling keep-alive for HTTP/1.0 proxies
             }
             $conn->close;

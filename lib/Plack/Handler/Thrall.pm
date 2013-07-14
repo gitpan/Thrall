@@ -3,11 +3,12 @@ package Plack::Handler::Thrall;
 use strict;
 use warnings;
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
 
 use base qw(Thrall::Server);
 
 use threads;
+use Plack::Util;
 
 use constant DEBUG => $ENV{PERL_THRALL_DEBUG};
 
@@ -24,10 +25,21 @@ sub new {
 
     # instantiate and set the variables
     my $self = $klass->SUPER::new(%args);
-    $self->{is_multithread} = 1;
+    if (threads->can('isthread')) {
+        # forks as threads emulation
+        $self->{is_multithread}  = Plack::Util::FALSE;
+        $self->{is_multiprocess} = Plack::Util::TRUE;
+    }
+    else {
+        # real threads
+        $self->{is_multithread}  = Plack::Util::TRUE;
+        $self->{is_multiprocess} = Plack::Util::FALSE;
+    };
     $self->{listen_sock} = $listen_sock
         if $listen_sock;
     $self->{max_workers} = $max_workers;
+
+    $self->{main_thread} = threads->self;
 
     $self;
 }
@@ -45,10 +57,14 @@ sub run {
 
     if ($self->{max_workers} != 0) {
         local $SIG{TERM} = sub {
-            foreach my $thr (threads->list) {
-                $thr->kill('TERM')->detach;
-            }
+            warn "*** SIGTERM received in thread ", threads->tid if DEBUG;
             $self->{term_received}++;
+            if (threads->tid) {
+                $self->{main_thread}->kill('TERM');
+                foreach my $thr (threads->list(threads::running)) {
+                    $thr->kill('TERM') if $thr->tid != threads->tid;
+                }
+            }
         };
         foreach my $n (1 .. $self->{max_workers}) {
             $self->_create_thread($app);
@@ -58,12 +74,18 @@ sub run {
             warn "*** running ", scalar threads->list, " threads" if DEBUG;
             foreach my $thr (threads->list(threads::joinable)) {
                 warn "*** wait for thread ", $thr->tid if DEBUG;
-                $thr->join;
+                eval {
+                    $thr->join;
+                };
+                warn $@ if $@;
                 $self->_create_thread($app);
                 $self->_sleep($self->{spawn_interval});
             }
             # slow down main thread
             $self->_sleep($self->{main_thread_delay});
+        }
+        foreach my $thr (threads->list) {
+            $thr->detach;
         }
     } else {
         # run directly, mainly for debugging
@@ -86,7 +108,10 @@ sub _create_thread {
         sub {
             my ($self, $app) = @_;
             warn "*** thread ", threads->tid, " starting" if DEBUG;
-            $self->accept_loop($app, $self->_calc_reqs_per_child());
+            eval {
+                $self->accept_loop($app, $self->_calc_reqs_per_child());
+            };
+            warn $@ if $@;
             warn "*** thread ", threads->tid, " ending" if DEBUG;
         },
         $self, $app

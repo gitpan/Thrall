@@ -15,6 +15,7 @@ t/01plack-test.t
 t/03post.t
 t/04-bumpy-life.t
 t/05server-header.t
+t/06harakiri.t
 t/06remote_port.t
 xt/check_changes.t
 xt/consistent_version_numbers.t

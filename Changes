@@ -1,5 +1,15 @@
 ------------------------------------------------------------------------
-0.0101    2013-06-15      Piotr Roszatycki <dexter@cpan.org>
+0.0102  2013-07-14      Piotr Roszatycki <dexter@cpan.org>
+
+* Increased default max-reqs-per-child to 1000.
+* Supports psgix.harakiri mode.
+* Supports forks if threads are unavailable.
+* More detailed Server header.
+* Increased stability on Windows XP and 7.
+* Handles errors in threads and converts them into warnings.
+
+------------------------------------------------------------------------
+0.0101  2013-06-15      Piotr Roszatycki <dexter@cpan.org>
 
 * Build.PL checks if threads are available.
 
