@@ -9,11 +9,12 @@ Thrall - a simple PSGI/Plack HTTP server which uses threads
 # DESCRIPTION
 
 Thrall is a standalone HTTP/1.0 server with keep-alive support. It uses
-threads instead pre-forking, so it works correctly on Windows.
+threads instead pre-forking, so it works correctly on Windows. It is pure-Perl
+implementation which doesn't require any XS package.
 
 # COMMAND LINE OPTIONS
 
-In addition to the options supported by [plackup](http://search.cpan.org/perldoc?plackup), Thrall accepts following
+In addition to the options supported by [plackup](https://metacpan.org/pod/plackup), Thrall accepts following
 options(s).
 
 - \--max-workers=\#
@@ -55,25 +56,46 @@ options(s).
     the Thrall does not use signals or semaphores and it requires a small delay in
     main thread so it doesn't consume all CPU. (default: 0.1)
 
+- \--thread-stack-size=\#
+
+    sets a new default per-thread stack size. (default: none)
+
 # NOTES
 
-Thrall was started as a fork of [Starlet](http://search.cpan.org/perldoc?Starlet) server. It has almost the same code
-as [Starlet](http://search.cpan.org/perldoc?Starlet) and it was adapted to use threads instead fork().
+Thrall was started as a fork of [Starlet](https://metacpan.org/pod/Starlet) server. It has almost the same code
+as [Starlet](https://metacpan.org/pod/Starlet) and it was adapted to use threads instead fork().
 
 # SEE ALSO
 
-[Starlet](http://search.cpan.org/perldoc?Starlet),
-[Starman](http://search.cpan.org/perldoc?Starman)
+[Starlet](https://metacpan.org/pod/Starlet),
+[Starman](https://metacpan.org/pod/Starman)
+
+# LIMITATIONS
+
+See ["BUGS AND LIMITATIONS" in threads](https://metacpan.org/pod/threads#BUGS-AND-LIMITATIONS) and ["Thread-Safety of System Libraries" in perlthrtut](https://metacpan.org/pod/perlthrtut#Thread-Safety-of-System-Libraries) to read about limitations for PSGI applications started
+with Thrall and check if you encountered a known problem.
+
+Especially, PSGI applications should avoid: changing current working
+directory, catching signals, starting new processes. Environment variables
+might (Linux, Unix) or might not (Windows) be shared between threads.
 
 # BUGS
 
-There is a problem with Perl implementation on Windows XP/Vista/7. Some
-requests can fail with message:
+There is a problem with Perl threads implementation which occurs on Windows
+XP/Vista/7. Some requests can fail with message:
 
     failed to set socket to nonblocking mode:An operation was attempted on
     something that is not a socket.
 
-Perl on Windows 8 works correctly.
+Perl on Windows 8 might works correctly. Also Cygwin version seems to be
+correct.
+
+This problem was fixed in Perl 5.18.2 and 5.19.5.
+
+See [https://rt.perl.org/rt3/Public/Bug/Display.html?id=119003](https://rt.perl.org/rt3/Public/Bug/Display.html?id=119003) for more
+information about this issue.
+
+## Reporting
 
 If you find the bug or want to implement new features, please report it at
 [https://github.com/dex4er/Thrall/issues](https://github.com/dex4er/Thrall/issues)

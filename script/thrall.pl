@@ -29,7 +29,7 @@ use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.0102';
+our $VERSION = '0.0103';
 
 use Plack::Runner;
 
@@ -37,7 +37,12 @@ sub version {
     print "Thrall $VERSION\n";
 }
 
-my $runner = Plack::Runner->new(server => 'Thrall', env => 'deployment', version_cb => \&version);
+my $runner = Plack::Runner->new(
+    server     => 'Thrall',
+    env        => 'deployment',
+    loader     => 'Delayed',
+    version_cb => \&version,
+);
 $runner->parse_options(@ARGV);
 $runner->run;
 

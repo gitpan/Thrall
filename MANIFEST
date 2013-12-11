@@ -1,6 +1,9 @@
 Build.PL
 Changes
+examples/hello.pl
+examples/hello.psgi
 examples/test_proxy.sh
+examples/threads-test.pl
 inc/Module/Build/My.pm
 lib/Plack/Handler/Thrall.pm
 lib/Thrall.pm

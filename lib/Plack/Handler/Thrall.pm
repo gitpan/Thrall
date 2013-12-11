@@ -3,7 +3,7 @@ package Plack::Handler::Thrall;
 use strict;
 use warnings;
 
-our $VERSION = '0.0102';
+our $VERSION = '0.0103';
 
 use base qw(Thrall::Server);
 
@@ -56,8 +56,12 @@ sub run {
     local $SIG{PIPE} = sub { 'IGNORE' };
 
     if ($self->{max_workers} != 0) {
+        if ($self->{thread_stack_size}) {
+            threads->set_stack_size($self->{thread_stack_size});
+        }
         local $SIG{TERM} = sub {
-            warn "*** SIGTERM received in thread ", threads->tid if DEBUG;
+            my ($sig) = @_;
+            warn "*** SIG$sig received in thread ", threads->tid if DEBUG;
             $self->{term_received}++;
             if (threads->tid) {
                 $self->{main_thread}->kill('TERM');
@@ -75,7 +79,7 @@ sub run {
             foreach my $thr (threads->list(threads::joinable)) {
                 warn "*** wait for thread ", $thr->tid if DEBUG;
                 eval {
-                    $thr->join;
+                    $thr->detach;
                 };
                 warn $@ if $@;
                 $self->_create_thread($app);
@@ -89,7 +93,11 @@ sub run {
         }
     } else {
         # run directly, mainly for debugging
-        local $SIG{TERM} = sub { exit 0; };
+        local $SIG{TERM} = sub {
+            my ($sig) = @_;
+            warn "*** SIG$sig received in thread ", threads->tid if DEBUG;
+            exit 0;
+        };
         while (1) {
             $self->accept_loop($app, $self->_calc_reqs_per_child());
             sleep $self->{spawn_interval} if $self->{spawn_interval};

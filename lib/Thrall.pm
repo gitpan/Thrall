@@ -11,7 +11,8 @@ Thrall - a simple PSGI/Plack HTTP server which uses threads
 =head1 DESCRIPTION
 
 Thrall is a standalone HTTP/1.0 server with keep-alive support. It uses
-threads instead pre-forking, so it works correctly on Windows.
+threads instead pre-forking, so it works correctly on Windows. It is pure-Perl
+implementation which doesn't require any XS package.
 
 =for readme stop
 
@@ -23,7 +24,7 @@ use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.0102';
+our $VERSION = '0.0103';
 
 1;
 
@@ -76,6 +77,10 @@ doing a "slow-restart". (default: none)
 the Thrall does not use signals or semaphores and it requires a small delay in
 main thread so it doesn't consume all CPU. (default: 0.1)
 
+=item --thread-stack-size=#
+
+sets a new default per-thread stack size. (default: none)
+
 =back
 
 =for readme continue
@@ -90,15 +95,33 @@ as L<Starlet> and it was adapted to use threads instead fork().
 L<Starlet>,
 L<Starman>
 
+=head1 LIMITATIONS
+
+See L<threads/"BUGS AND LIMITATIONS"> and L<perlthrtut/"Thread-Safety of
+System Libraries"> to read about limitations for PSGI applications started
+with Thrall and check if you encountered a known problem.
+
+Especially, PSGI applications should avoid: changing current working
+directory, catching signals, starting new processes. Environment variables
+might (Linux, Unix) or might not (Windows) be shared between threads.
+
 =head1 BUGS
 
-There is a problem with Perl implementation on Windows XP/Vista/7. Some
-requests can fail with message:
+There is a problem with Perl threads implementation which occurs on Windows
+XP/Vista/7. Some requests can fail with message:
 
   failed to set socket to nonblocking mode:An operation was attempted on
   something that is not a socket.
 
-Perl on Windows 8 works correctly.
+Perl on Windows 8 might works correctly. Also Cygwin version seems to be
+correct.
+
+This problem was fixed in Perl 5.18.2 and 5.19.5.
+
+See L<https://rt.perl.org/rt3/Public/Bug/Display.html?id=119003> for more
+information about this issue.
+
+=head2 Reporting
 
 If you find the bug or want to implement new features, please report it at
 L<https://github.com/dex4er/Thrall/issues>
