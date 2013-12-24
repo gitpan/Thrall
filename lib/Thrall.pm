@@ -8,9 +8,15 @@ Thrall - a simple PSGI/Plack HTTP server which uses threads
 
   $ plackup -s Thrall --port=80 [options] your-app.psgi
 
+  $ plackup -s Thrall --port=443 --ssl=1 --ssl-key-file=file.key --ssl-cert-file=file.crt [options] your-app.psgi
+
+  $ plackup -s Thrall --port=80 --ipv6 [options] your-app.psgi
+
+  $ plackup -s Thrall --socket=/tmp/thrall.sock [options] your-app.psgi
+
 =head1 DESCRIPTION
 
-Thrall is a standalone HTTP/1.0 server with keep-alive support. It uses
+Thrall is a standalone HTTP/1.1 server with keep-alive support. It uses
 threads instead pre-forking, so it works correctly on Windows. It is pure-Perl
 implementation which doesn't require any XS package.
 
@@ -24,7 +30,7 @@ use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.0103';
+our $VERSION = '0.0200';
 
 1;
 
@@ -81,6 +87,29 @@ main thread so it doesn't consume all CPU. (default: 0.1)
 
 sets a new default per-thread stack size. (default: none)
 
+=item --ssl=#
+
+enables SSL support. The L<IO::Socket::SSL> module is required. (default: 0)
+
+=item --ssl-key-file=#
+
+specifies the path to SSL key file. (default: none)
+
+=item --ssl-cert-file=#
+
+specifies the path to SSL certificate file. (default: none)
+
+=item --ipv6=#
+
+enables IPv6 support. The L<IO::Socket::IP> module is required. (default: 0)
+
+=item --socket=#
+
+enables UNIX socket support. The L<IO::Socket::UNIX> module is required. The
+socket file have to be not yet created. The first character C<@> or C<\0> in
+the socket file name means that abstract socket address will be created.
+(default: none)
+
 =back
 
 =for readme continue
@@ -107,16 +136,16 @@ might (Linux, Unix) or might not (Windows) be shared between threads.
 
 =head1 BUGS
 
-There is a problem with Perl threads implementation which occurs on Windows
-XP/Vista/7. Some requests can fail with message:
+There is a problem with Perl threads implementation which occurs on Windows.
+Some requests can fail with message:
 
   failed to set socket to nonblocking mode:An operation was attempted on
   something that is not a socket.
 
-Perl on Windows 8 might works correctly. Also Cygwin version seems to be
-correct.
+Cygwin version seems to be correct.
 
-This problem was fixed in Perl 5.18.2 and 5.19.5.
+This problem was introduced in Perl 5.16 and fixed in Perl 5.18.2 and Perl
+5.19.5.
 
 See L<https://rt.perl.org/rt3/Public/Bug/Display.html?id=119003> for more
 information about this issue.
@@ -129,13 +158,21 @@ L<https://github.com/dex4er/Thrall/issues>
 The code repository is available at
 L<http://github.com/dex4er/Thrall>
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+Piotr Roszatycki <dexter@cpan.org>
+
+Based on Starlet by:
 
 Kazuho Oku
 
 miyagawa
 
-Piotr Roszatycki <dexter@cpan.org>
+kazeburo
+
+Some code based on Plack:
+
+Tatsuhiko Miyagawa
 
 =head1 LICENSE
 

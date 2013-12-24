@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dex4er/Thrall.png?branch=master)](https://travis-ci.org/dex4er/Thrall)
+
 # NAME
 
 Thrall - a simple PSGI/Plack HTTP server which uses threads
@@ -6,9 +8,15 @@ Thrall - a simple PSGI/Plack HTTP server which uses threads
 
     $ plackup -s Thrall --port=80 [options] your-app.psgi
 
+    $ plackup -s Thrall --port=443 --ssl=1 --ssl-key-file=file.key --ssl-cert-file=file.crt [options] your-app.psgi
+
+    $ plackup -s Thrall --port=80 --ipv6 [options] your-app.psgi
+
+    $ plackup -s Thrall --socket=/tmp/thrall.sock [options] your-app.psgi
+
 # DESCRIPTION
 
-Thrall is a standalone HTTP/1.0 server with keep-alive support. It uses
+Thrall is a standalone HTTP/1.1 server with keep-alive support. It uses
 threads instead pre-forking, so it works correctly on Windows. It is pure-Perl
 implementation which doesn't require any XS package.
 
@@ -60,6 +68,29 @@ options(s).
 
     sets a new default per-thread stack size. (default: none)
 
+- \--ssl=\#
+
+    enables SSL support. The [IO::Socket::SSL](https://metacpan.org/pod/IO::Socket::SSL) module is required. (default: 0)
+
+- \--ssl-key-file=\#
+
+    specifies the path to SSL key file. (default: none)
+
+- \--ssl-cert-file=\#
+
+    specifies the path to SSL certificate file. (default: none)
+
+- \--ipv6=\#
+
+    enables IPv6 support. The [IO::Socket::IP](https://metacpan.org/pod/IO::Socket::IP) module is required. (default: 0)
+
+- \--socket=\#
+
+    enables UNIX socket support. The [IO::Socket::UNIX](https://metacpan.org/pod/IO::Socket::UNIX) module is required. The
+    socket file have to be not yet created. The first character `@` or `\0` in
+    the socket file name means that abstract socket address will be created.
+    (default: none)
+
 # NOTES
 
 Thrall was started as a fork of [Starlet](https://metacpan.org/pod/Starlet) server. It has almost the same code
@@ -81,16 +112,16 @@ might (Linux, Unix) or might not (Windows) be shared between threads.
 
 # BUGS
 
-There is a problem with Perl threads implementation which occurs on Windows
-XP/Vista/7. Some requests can fail with message:
+There is a problem with Perl threads implementation which occurs on Windows.
+Some requests can fail with message:
 
     failed to set socket to nonblocking mode:An operation was attempted on
     something that is not a socket.
 
-Perl on Windows 8 might works correctly. Also Cygwin version seems to be
-correct.
+Cygwin version seems to be correct.
 
-This problem was fixed in Perl 5.18.2 and 5.19.5.
+This problem was introduced in Perl 5.16 and fixed in Perl 5.18.2 and Perl
+5.19.5.
 
 See [https://rt.perl.org/rt3/Public/Bug/Display.html?id=119003](https://rt.perl.org/rt3/Public/Bug/Display.html?id=119003) for more
 information about this issue.
@@ -103,13 +134,21 @@ If you find the bug or want to implement new features, please report it at
 The code repository is available at
 [http://github.com/dex4er/Thrall](http://github.com/dex4er/Thrall)
 
-# AUTHOR
+# AUTHORS
+
+Piotr Roszatycki <dexter@cpan.org>
+
+Based on Starlet by:
 
 Kazuho Oku
 
 miyagawa
 
-Piotr Roszatycki <dexter@cpan.org>
+kazeburo
+
+Some code based on Plack:
+
+Tatsuhiko Miyagawa
 
 # LICENSE
 

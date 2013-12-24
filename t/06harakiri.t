@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 
@@ -5,8 +7,8 @@ use HTTP::Request::Common;
 use Plack::Test;
 use Test::More;
 
-if ($^O =~ /^(MSWin32|cygwin)$/) {
-    plan skip_all => 'TCP tests on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    plan skip_all => 'Perl with bug RT#119003 on Windows';
     exit 0;
 }
 
@@ -21,11 +23,13 @@ test_psgi
     client => sub {
         my %seen_pid;
         my $cb = shift;
+        sleep 1;
         for (1..23) {
             my $res = $cb->(GET "/");
             $seen_pid{$res->content}++;
         }
-        cmp_ok(keys(%seen_pid), '<=', 10, 'In non-harakiri mode, pid is reused')
+        cmp_ok(keys(%seen_pid), '<=', 10, 'In non-harakiri mode, pid is reused');
+        sleep 1;
     };
 
 test_psgi
@@ -37,11 +41,13 @@ test_psgi
     client => sub {
         my %seen_pid;
         my $cb = shift;
+        sleep 1;
         for (1..23) {
             my $res = $cb->(GET "/");
             $seen_pid{$res->content}++;
         }
         is keys(%seen_pid), 23, 'In Harakiri mode, each pid only used once';
+        sleep 1;
     };
 
 done_testing;

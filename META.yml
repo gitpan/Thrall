@@ -16,19 +16,19 @@ name: Thrall
 provides:
   Plack::Handler::Thrall:
     file: lib/Plack/Handler/Thrall.pm
-    version: 0.0103
+    version: 0.0200
   Thrall:
     file: lib/Thrall.pm
-    version: 0.0103
+    version: 0.0200
   Thrall::Server:
     file: lib/Thrall/Server.pm
-    version: 0.0103
+    version: 0.0200
 requires:
   Plack: 0.992
   perl: 5.008001
-  threads: 0
+  threads: 1.73
 resources:
   bugtracker: http://github.com/dex4er/Thrall/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/dex4er/Thrall
-version: 0.0103
+version: 0.0200

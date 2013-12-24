@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 
@@ -6,8 +8,8 @@ use Plack::Runner;
 use Test::More;
 use Test::TCP;
 
-if ($^O =~ /^(MSWin32|cygwin)$/) {
-    plan skip_all => 'TCP tests on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    plan skip_all => 'Perl with bug RT#119003 on Windows';
     exit 0;
 }
 
@@ -40,6 +42,7 @@ test_tcp(
     },
     client => sub {
         my $port = shift;
+        sleep 1;
         note 'send a broken request';
         my $sock = IO::Socket::INET->new(
             PeerAddr => "127.0.0.1:$port",

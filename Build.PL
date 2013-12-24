@@ -19,7 +19,7 @@ my $build = Module::Build::My->new(
     license                 => 'perl',
     requires                => {
         'perl'                  => 5.008_001,
-        $Config{useithreads} ? 'threads' : 'forks' => 0,
+        $Config{useithreads} ? ('threads' => 1.73) : ('forks' => 0),
         'Plack'                 => 0.9920,
     },
     build_requires          => {
@@ -48,5 +48,9 @@ my $build = Module::Build::My->new(
         },
     },
 );
+
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    $build->log_info("Warning: this version of Perl has broken GLOB in threads and Thrall might works incorrectly \n");
+}
 
 $build->create_build_script;

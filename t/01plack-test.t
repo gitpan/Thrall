@@ -1,11 +1,25 @@
+#!/usr/bin/perl
+
 use strict;
 use Test::More;
 use Plack::Test::Suite;
 
-if ($^O =~ /^(MSWin32|cygwin)$/) {
-    plan skip_all => 'TCP tests on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    plan skip_all => 'Perl with bug RT#119003 on Windows';
     exit 0;
 }
+
+push @Plack::Test::Suite::TEST,
+    [
+        'sleep',
+        sub {
+            sleep 1;
+            pass;
+        },
+        sub {
+            # nothing
+        },
+    ];
 
 Plack::Test::Suite->run_server_tests('Thrall');
 done_testing();

@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 
@@ -5,8 +7,8 @@ use Plack::Loader;
 use Test::More;
 use Test::TCP qw(empty_port);
 
-if ($^O =~ /^(MSWin32|cygwin)$/) {
-    plan skip_all => 'TCP tests on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    plan skip_all => 'Perl with bug RT#119003 on Windows';
     exit 0;
 }
 
@@ -15,6 +17,8 @@ my $thrall = Plack::Loader->load(
     min_reqs_per_child => 5,
     max_reqs_per_child => 10,
 );
+
+sleep 1;
 
 my ($min, $max) = (7, 7);
 for (my $i = 0; $i < 10000; $i++) {

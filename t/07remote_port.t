@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 use Test::More;
@@ -5,8 +7,8 @@ use Test::TCP;
 use IO::Socket::INET;
 use Plack::Loader;
 
-if ($^O =~ /^(MSWin32|cygwin)$/) {
-    plan skip_all => 'TCP tests on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    plan skip_all => 'Perl with bug RT#119003 on Windows';
     exit 0;
 }
 
@@ -24,6 +26,7 @@ test_tcp(
         $sock->syswrite($req,length($req));
         $sock->sysread( my $buf, 1024);
         like( $buf, qr/HELLO $localport/);
+        sleep 1;
     },
     server => sub {
         my $port = shift;
@@ -38,6 +41,7 @@ test_tcp(
             my $remote_port = $env->{REMOTE_PORT};
             [200, ['Content-Type'=>'text/html'], ['HELLO '.$remote_port]];
         });
+        exit;
     },
 );
 

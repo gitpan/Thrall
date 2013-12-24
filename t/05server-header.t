@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 use Test::More;
@@ -5,8 +7,8 @@ use Test::TCP;
 use HTTP::Tiny;
 use Plack::Loader;
 
-if ($^O =~ /^(MSWin32|cygwin)$/) {
-    plan skip_all => 'TCP tests on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and ($] < 5.018002 or $] >= 5.019 and $] < 5.019005)) {
+    plan skip_all => 'Perl with bug RT#119003 on Windows';
     exit 0;
 }
 
@@ -24,7 +26,7 @@ test_tcp(
         ok( $res->{success} );
         unlike( scalar $res->{headers}{server}, qr/Thrall/ );
         like( scalar $res->{headers}{server}, qr/Hello/ );
-
+        sleep 1;
     },
     server => sub {
         my $port = shift;
@@ -39,6 +41,7 @@ test_tcp(
             push @headers, 'Server', 'Hello' if $env->{QUERY_STRING};
             [200, \@headers, ['HELLO']];
         });
+        exit;
     },
 );
 

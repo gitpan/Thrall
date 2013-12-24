@@ -3,7 +3,7 @@ package Plack::Handler::Thrall;
 use strict;
 use warnings;
 
-our $VERSION = '0.0103';
+our $VERSION = '0.0200';
 
 use base qw(Thrall::Server);
 
@@ -100,7 +100,7 @@ sub run {
         };
         while (1) {
             $self->accept_loop($app, $self->_calc_reqs_per_child());
-            sleep $self->{spawn_interval} if $self->{spawn_interval};
+            $self->_sleep($self->{spawn_interval});
         }
     }
 }
@@ -112,7 +112,7 @@ sub _sleep {
 
 sub _create_thread {
     my ($self, $app) = @_;
-    my $thr = threads->create(
+    my $thr = threads->create( {context => 'void'},
         sub {
             my ($self, $app) = @_;
             warn "*** thread ", threads->tid, " starting" if DEBUG;

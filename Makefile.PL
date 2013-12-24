@@ -3,19 +3,19 @@ require 5.008001;
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
+  'NAME' => 'Thrall',
   'VERSION_FROM' => 'lib/Thrall.pm',
+  'INSTALLDIRS' => 'site',
+  'PREREQ_PM' => {
+                   'Plack' => '0.992',
+                   'threads' => '1.73',
+                   'Test::More' => '0.88',
+                   'Test::TCP' => '0.15',
+                   'HTTP::Tiny' => 0
+                 },
+  'PL_FILES' => {},
   'EXE_FILES' => [
                    'script/thrall.pl'
-                 ],
-  'INSTALLDIRS' => 'site',
-  'PL_FILES' => {},
-  'PREREQ_PM' => {
-                   'threads' => 0,
-                   'HTTP::Tiny' => 0,
-                   'Test::TCP' => '0.15',
-                   'Test::More' => '0.88',
-                   'Plack' => '0.992'
-                 },
-  'NAME' => 'Thrall'
+                 ]
 )
 ;
