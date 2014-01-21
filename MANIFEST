@@ -1,22 +1,18 @@
 Build.PL
 Changes
 examples/dump.psgi
-examples/hello.pl
 examples/hello.psgi
 examples/localhost.crt
 examples/localhost.key
+examples/mojo.pl
 examples/test_proxy.sh
 examples/threads-test.pl
 inc/Module/Build/My.pm
 lib/Plack/Handler/Thrall.pm
 lib/Thrall.pm
 lib/Thrall/Server.pm
-LICENSE
-Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
-META.json
-META.yml
 README
 README.md
 script/thrall.pl
@@ -49,4 +45,8 @@ xt/pod_spellrc
 xt/pod_syntax.t
 xt/portability_files.t
 xt/signature.t
+Makefile.PL
+LICENSE
+META.yml
+META.json
 SIGNATURE    Added here by Module::Build

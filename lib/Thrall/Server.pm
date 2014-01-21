@@ -3,7 +3,7 @@ package Thrall::Server;
 use strict;
 use warnings;
 
-our $VERSION = '0.0201';
+our $VERSION = '0.0202';
 
 use Config;
 use if ! $Config{useithreads}, 'forks';
@@ -167,6 +167,7 @@ sub accept_loop {
     $self->{can_exit} = 1;
     my $is_keepalive = 0;
 
+    # Threads don't like simple 'IGNORE'
     local $SIG{PIPE} = sub { 'IGNORE' };
 
     while (! defined $max_reqs_per_child || $proc_req_count < $max_reqs_per_child) {
