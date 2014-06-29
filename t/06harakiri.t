@@ -9,13 +9,14 @@ use HTTP::Request::Common;
 use Plack::Test;
 use Test::More;
 
-if ($^O eq 'MSWin32' and $] >= 5.016 and $] < 5.019005) {
-    plan skip_all => 'Perl with bug RT#119003 on Windows';
+if ($^O eq 'MSWin32' and $] >= 5.016 and $] < 5.019005 and not $ENV{PERL_TEST_BROKEN}) {
+    plan skip_all => 'Perl with bug RT#40565 on MSWin32';
     exit 0;
 }
 
 $Plack::Test::Impl = 'Server';
 $ENV{PLACK_SERVER} = 'Thrall';
+$ENV{PLACK_QUIET} = 1;
 
 test_psgi
     app => sub {

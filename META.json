@@ -1,10 +1,12 @@
 {
    "abstract" : "a simple PSGI/Plack HTTP server which uses threads",
    "author" : [
-      "Piotr Roszatycki <dexter@cpan.org>"
+      "Piotr Roszatycki <dexter@cpan.org>",
+      "Jeremy Howard <j+daemonize@howard.fm>",
+      "Paul Seamons <paul@seamons.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4203",
+   "generated_by" : "Module::Build version 0.4205",
    "license" : [
       "perl_5"
    ],
@@ -32,15 +34,15 @@
    "provides" : {
       "Plack::Handler::Thrall" : {
          "file" : "lib/Plack/Handler/Thrall.pm",
-         "version" : "0.0202"
+         "version" : "0.0300"
       },
       "Thrall" : {
          "file" : "lib/Thrall.pm",
-         "version" : "0.0202"
+         "version" : "0.0300"
       },
       "Thrall::Server" : {
          "file" : "lib/Thrall/Server.pm",
-         "version" : "0.0202"
+         "version" : "0.0300"
       }
    },
    "release_status" : "stable",
@@ -55,5 +57,5 @@
          "url" : "http://github.com/dex4er/Thrall"
       }
    },
-   "version" : "0.0202"
+   "version" : "0.0300"
 }

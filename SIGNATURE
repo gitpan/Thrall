@@ -14,39 +14,43 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 ae45c64ed3fe9000a402fb6b46770375cc7ea8e4 Build.PL
-SHA1 1271f6d807ee086e38a31d0c0427ab471f3304cc Changes
-SHA1 f9ad1e83a05f64db0fc27c9ca2e36661c7bcb5a6 LICENSE
-SHA1 8ca33e74f6f60224c424b6d3b7c75a8eed8b1e0c MANIFEST
+SHA1 2cf7c9c2eeb260da37fd3f4ac8476ff9a2963fe9 Build.PL
+SHA1 8d3508a1939c2960c772e445bf1e88013235b38b Changes
+SHA1 19441c7e5b5760f3badb3f15d72ee63ee475d9a5 LICENSE
+SHA1 24fdd559e07f8912e856da3422e09bb9cf7def26 MANIFEST
 SHA1 8db1be1ca479d3b130569f025fba70fbe7e7f075 MANIFEST.SKIP
-SHA1 4b03feb5f61d7893597b1be781589cd812c77678 META.json
-SHA1 08ac5ad5d85147cbffe4652805497a7d3b05deff META.yml
-SHA1 de13ccba6e8b6cc5b1ad877cd5b7756f6d41d639 Makefile.PL
-SHA1 3c6e4695a5684671b17cc406ad6861d9f5ea3294 README
-SHA1 1b949658b1cb57fd480fd8dcafa6af1ad98766f0 README.md
+SHA1 4819a02c161e5f022fbac2f72d2648add4082204 META.json
+SHA1 fefb1fb03a98669d18c4e5f2c4290668589e56a4 META.yml
+SHA1 8903b22cd95da49389b3482a25c104f9c0107f75 Makefile.PL
+SHA1 f2676845cafb5d8f4729933b179555e14e6bdaf2 README
+SHA1 f8b80dcbdbcba5ab81cba88cd7f97b76684efed1 README.md
+SHA1 9032740f6c463118e8b899a33a34b408a85442fb examples/ca.crt
 SHA1 a617034a3db7806fb2839327c1487eeb7f079491 examples/dump.psgi
 SHA1 22bf5e19ea225451c393d15bf7bd155dd90f4040 examples/hello.psgi
-SHA1 de7364dd093ab00100d5a4cee2012e979a007e21 examples/localhost.crt
-SHA1 f95ec1e406a62d124cc3ff94393f3a56ddd12f6e examples/localhost.key
+SHA1 b90a21bd98935877f549c576bfc114f14362619c examples/localhost.crt
+SHA1 4b66749be45d23101582764ef2b08368d9d71a3b examples/localhost.key
 SHA1 a95d269ef5a2a3e78de538a314fe215a2c37d38e examples/mojo.pl
 SHA1 90b715d25484785e647b64ff15718399d1d0e5c6 examples/test_proxy.sh
 SHA1 2515a03347303bf5a6ad1524e8f28dd34eec8c6d examples/threads-test.pl
 SHA1 ac8f68c8a6b75f740e73def9ffcc2d34722f153f inc/Module/Build/My.pm
-SHA1 9c248f1bfa25a3e65ddca573fe1df2805c6b131f lib/Plack/Handler/Thrall.pm
-SHA1 230257f1e077c6b089b931ee0235c4d449621e80 lib/Thrall.pm
-SHA1 1ac2e6045d73479cfca0a3aec77610bdd39a461f lib/Thrall/Server.pm
-SHA1 116ea65a1614431c78891f46ecb2edd0b73b7521 script/thrall.pl
+SHA1 62372b383fcd794778ea7e45abe7617db207c081 lib/Plack/Handler/Thrall.pm
+SHA1 0a5593c84e3136be12d7aacf632786baed9a3b35 lib/Thrall.pm
+SHA1 7c54f97e5b5d20657f76cfb82e1aae0703e91237 lib/Thrall/Server.pm
+SHA1 a405207e0df9b2551554db9d53b880fa3bdb55f1 script/thrall.pl
 SHA1 a6b7d27559b430bab52e6b475a2995800e8732a4 t/00base-hello.psgi
 SHA1 96c20ca178f1b3ca127c3ee7e91f327db8ba30e3 t/00use.t
-SHA1 59d40799d59c4489d4c88664989f73f5e127588c t/01plack-test.t
-SHA1 543e6e0e9d27ca6adc4da95fd1caeb1b7063ce78 t/03post.t
-SHA1 c5c5968fe770c00150b04f79d6734a24d273da78 t/04-bumpy-life.t
-SHA1 756276f82918ad19c899b71f4da5c0d683ee0a29 t/05server-header.t
-SHA1 306021da1b27e1c1d9adc2aab4f63bb61aee8530 t/06harakiri.t
-SHA1 252097cbd07a56a789025d9c4455ef09b5fc7686 t/07remote_port.t
-SHA1 362980ce3c3d9a15f429f1fb3a59b0df1fa86a21 t/08chunked_req.t
-SHA1 fc8cfcccd41b0762b1f25792709639dc2b29bc7f t/09chunked_zero_length.t
-SHA1 14dce162a60731d2b6318e20bc2c237a970dd816 t/10unix_domain_socket.t
+SHA1 16d13189c53489bd898179993aa84d7c9987a2bd t/01plack-test.t
+SHA1 f50ef76cb9daa75dd931916359703cba34588aca t/03post.t
+SHA1 c90150f1e1a7a5424362978340b1d4374305181c t/04-bumpy-life.t
+SHA1 b1a24873a4224028c0d598b66e7a8f1a10df3dd1 t/05server-header.t
+SHA1 ed3620ce39e326ef4938cbf4ba6201d1c9b1d0fb t/06harakiri.t
+SHA1 9bcfeb43b5cf7a796ecd898e1451ef08129c0471 t/07remote_port.t
+SHA1 0c4f5db900e61903e66b3ff3283b6e3615217105 t/08chunked_req.t
+SHA1 9cba54329f2a4086e6ee6fad0af10c8c49e05a2f t/09chunked_zero_length.t
+SHA1 8486ffbebc446415b1ee7dc10a14863dca0fdd21 t/10unix_domain_socket.t
+SHA1 b6098a1d9e02a43b906a2632926d7c35c6ec7fe1 t/50server.t
+SHA1 85a13417bddb6cc03e24199b64bc75a1bda26a17 t/60ssl.t
+SHA1 af5224697295da20ebcd60b204e1b55d91b34ffa t/61ssl_largebody.t
 SHA1 90353a99ac0f719b6f3e58029804d8556cedc2ab xt/check_changes.t
 SHA1 1c27e5840b0154e44120bc2edc02fbb507c76819 xt/consistent_version_numbers.t
 SHA1 67bb4c141ea95809f3db2d526ce91d9e6d894756 xt/copyright.t
@@ -66,9 +70,9 @@ SHA1 87cb53d4ad0162a872d5c70013fc41719e030555 xt/pod_syntax.t
 SHA1 f2dd15ffc2836703f46f2622702e1676891eed21 xt/portability_files.t
 SHA1 a38994922fda6d64e2ee75198fadc464a221fea9 xt/signature.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
+Version: GnuPG v1
 
-iEYEARECAAYFAlLekG8ACgkQhMHHe8CxCluGWwCeOuUh9ToCpBTLZyBmtU9UaDjk
-rnQAnjEahg0MTRm6Y2dc9Cudfh/AcYpe
-=3b/4
+iEYEARECAAYFAlOwjkcACgkQhMHHe8CxClumRwCfTTpHVmNsJgnbEUoSGzsnzbkS
+MzcAoOg1ojSb/gJ3PGd614pi3vZvmhlV
+=Q6d4
 -----END PGP SIGNATURE-----
