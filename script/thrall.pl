@@ -4,6 +4,39 @@
 
 thrall - a simple PSGI/Plack HTTP server which uses threads
 
+=cut
+
+use 5.008_001;
+
+use strict;
+use warnings;
+
+our $VERSION = '0.0301';
+
+use Plack::Runner;
+
+sub version {
+    print "Thrall $VERSION\n";
+}
+
+my $runner = Plack::Runner->new(
+    server     => 'Thrall',
+    env        => 'deployment',
+    loader     => 'Delayed',
+    version_cb => \&version,
+);
+
+$runner->parse_options(@ARGV);
+
+if ($runner->{help}) {
+    require Pod::Usage;
+    Pod::Usage::pod2usage(-verbose => 1, -input => \*DATA);
+}
+
+$runner->run;
+
+__DATA__
+
 =head1 SYNOPSIS
 
   $ thrall --workers=20 --max-reqs-per-child=100 app.psgi
@@ -23,37 +56,7 @@ implementation which doesn't require any XS package.
 Thrall was started as a fork of L<Starlet> server. It has almost the same code
 as L<Starlet> and it was adapted to use threads instead fork().
 
-=head1 OPTIONS
-
-See L<plackup> and L<Thrall> for available command line options.
-
 =for readme stop
-
-=cut
-
-
-use 5.008_001;
-
-use strict;
-use warnings;
-
-our $VERSION = '0.0300';
-
-use Plack::Runner;
-
-sub version {
-    print "Thrall $VERSION\n";
-}
-
-my $runner = Plack::Runner->new(
-    server     => 'Thrall',
-    env        => 'deployment',
-    loader     => 'Delayed',
-    version_cb => \&version,
-);
-$runner->parse_options(@ARGV);
-$runner->run;
-
 
 =head1 OPTIONS
 

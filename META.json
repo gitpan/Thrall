@@ -34,15 +34,15 @@
    "provides" : {
       "Plack::Handler::Thrall" : {
          "file" : "lib/Plack/Handler/Thrall.pm",
-         "version" : "0.0300"
+         "version" : "0.0301"
       },
       "Thrall" : {
          "file" : "lib/Thrall.pm",
-         "version" : "0.0300"
+         "version" : "0.0301"
       },
       "Thrall::Server" : {
          "file" : "lib/Thrall/Server.pm",
-         "version" : "0.0300"
+         "version" : "0.0301"
       }
    },
    "release_status" : "stable",
@@ -57,5 +57,5 @@
          "url" : "http://github.com/dex4er/Thrall"
       }
    },
-   "version" : "0.0300"
+   "version" : "0.0301"
 }

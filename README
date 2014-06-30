@@ -18,9 +18,6 @@ DESCRIPTION
     Thrall was started as a fork of Starlet server. It has almost the same
     code as Starlet and it was adapted to use threads instead fork().
 
-OPTIONS
-    See plackup and Thrall for available command line options.
-
 SEE ALSO
     Starlight, Starlet, Starman
 
