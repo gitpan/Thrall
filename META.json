@@ -6,7 +6,7 @@
       "Paul Seamons <paul@seamons.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4205",
+   "generated_by" : "Module::Build version 0.421",
    "license" : [
       "perl_5"
    ],
@@ -34,15 +34,15 @@
    "provides" : {
       "Plack::Handler::Thrall" : {
          "file" : "lib/Plack/Handler/Thrall.pm",
-         "version" : "0.0301"
+         "version" : "0.0302"
       },
       "Thrall" : {
          "file" : "lib/Thrall.pm",
-         "version" : "0.0301"
+         "version" : "0.0302"
       },
       "Thrall::Server" : {
          "file" : "lib/Thrall/Server.pm",
-         "version" : "0.0301"
+         "version" : "0.0302"
       }
    },
    "release_status" : "stable",
@@ -57,5 +57,5 @@
          "url" : "http://github.com/dex4er/Thrall"
       }
    },
-   "version" : "0.0301"
+   "version" : "0.0302"
 }

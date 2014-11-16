@@ -9,7 +9,7 @@ build_requires:
   Test::More: '0.88'
   Test::TCP: '0.15'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4205, CPAN::Meta::Converter version 2.140640'
+generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.142690'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -18,13 +18,13 @@ name: Thrall
 provides:
   Plack::Handler::Thrall:
     file: lib/Plack/Handler/Thrall.pm
-    version: '0.0301'
+    version: '0.0302'
   Thrall:
     file: lib/Thrall.pm
-    version: '0.0301'
+    version: '0.0302'
   Thrall::Server:
     file: lib/Thrall/Server.pm
-    version: '0.0301'
+    version: '0.0302'
 requires:
   Plack: '0.992'
   perl: '5.008001'
@@ -33,4 +33,4 @@ resources:
   bugtracker: http://github.com/dex4er/Thrall/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/dex4er/Thrall
-version: '0.0301'
+version: '0.0302'
